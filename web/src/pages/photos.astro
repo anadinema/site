@@ -1,0 +1,81 @@
+---
+import Base from '@/layouts/Base.astro'
+import { getPhotos } from '@/lib/data'
+
+const photos = getPhotos()
+---
+
+<Base title="photos">
+  <div class="page-title"><span class="sl">// </span>photos 📸</div>
+  <p class="page-sub">street, landscape, and light — shot on fujifilm x-t5 · stockholm & beyond</p>
+
+  <div class="photo-grid">
+    {photos.map((photo) => (
+      <div class:list={['photo-item', { tall: photo.tall }]}>
+        <img
+          src={photo.src}
+          alt={photo.caption}
+          loading="lazy"
+        />
+        <div class="photo-caption">
+          {photo.caption}
+          <span class="photo-location">{photo.location}</span>
+        </div>
+      </div>
+    ))}
+  </div>
+</Base>
+
+<style>
+  .photo-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .photo-item {
+    overflow: hidden;
+    border-radius: 3px;
+    background: var(--bg-3);
+    border: 1px solid var(--border);
+    cursor: pointer;
+  }
+
+  .photo-item.tall { grid-row: span 2; }
+
+  .photo-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    min-height: 200px;
+    transition: transform 0.4s ease, filter 0.3s ease;
+    filter: saturate(0.85);
+  }
+
+  .photo-item.tall img { min-height: 420px; }
+
+  .photo-item:hover img {
+    transform: scale(1.03);
+    filter: saturate(1.05);
+  }
+
+  .photo-caption {
+    padding: 8px 10px 9px;
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    border-top: 1px solid var(--border);
+    line-height: 1.4;
+  }
+
+  .photo-location {
+    color: var(--text-faint);
+    margin-left: 8px;
+  }
+
+  @media (max-width: 480px) {
+    .photo-grid          { grid-template-columns: 1fr; }
+    .photo-item.tall     { grid-row: span 1; }
+    .photo-item.tall img { min-height: 240px; }
+  }
+</style>

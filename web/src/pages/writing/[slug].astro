@@ -1,0 +1,152 @@
+---
+import Base from '@/layouts/Base.astro'
+import { getPosts, getPost } from '@/lib/data'
+
+// When the API is ready, flip this page to SSR:
+// export const prerender = false
+// const { slug } = Astro.params
+// const post = await fetchPost(slug)
+// if (!post) return Astro.redirect('/writing')
+
+export async function getStaticPaths() {
+  return getPosts().map((post) => ({
+    params: { slug: post.slug },
+  }))
+}
+
+const { slug } = Astro.params
+const post = getPost(slug!)
+
+if (!post) {
+  return Astro.redirect('/writing')
+}
+---
+
+<Base title={post.title}>
+  <div class="post-nav">
+    <a href="/writing">← writing</a>
+  </div>
+
+  <article>
+    <header class="post-header">
+      <h1 class="post-title-big">{post.title}</h1>
+      <div class="post-header-meta">
+        <span class="post-tag">{post.tag}</span>
+        <span class="post-date-full">{post.date}</span>
+      </div>
+    </header>
+
+    <div class="post-body">
+      <!-- Replace with proper markdown rendering once API is live.
+           Options: marked, markdown-it, or use Astro Content Collections
+           if you store posts as .md files during development. -->
+      <p>{post.body}</p>
+    </div>
+  </article>
+</Base>
+
+<style>
+  .post-nav {
+    margin-bottom: 36px;
+  }
+
+  .post-nav a {
+    font-size: 0.80rem;
+    color: var(--text-muted);
+    border: none;
+    transition: color 0.15s;
+  }
+
+  .post-nav a:hover { color: var(--accent); }
+
+  .post-header { margin-bottom: 36px; }
+
+  .post-title-big {
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: var(--text);
+    letter-spacing: -0.01em;
+    line-height: 1.3;
+    margin-bottom: 10px;
+  }
+
+  .post-header-meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+  }
+
+  .post-date-full { color: var(--text-muted); }
+
+  /* ── Prose ── */
+  .post-body {
+    font-size: 0.92rem;
+    line-height: 2;
+    color: var(--text);
+    max-width: 600px;
+  }
+
+  .post-body :global(h2) {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text);
+    margin: 2.5rem 0 1rem;
+  }
+
+  .post-body :global(h2::before) {
+    content: '// ';
+    color: var(--accent);
+  }
+
+  .post-body :global(p)  { margin-bottom: 1.2rem; }
+  .post-body :global(ul) { margin: 0 0 1.2rem 1.2rem; }
+  .post-body :global(li) { margin-bottom: 0.4rem; }
+
+  .post-body :global(code) {
+    background: var(--bg-2);
+    border: 1px solid var(--border);
+    padding: 1px 6px;
+    border-radius: 2px;
+    font-size: 0.88em;
+    color: var(--accent);
+  }
+
+  .post-body :global(pre) {
+    background: var(--bg-2);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 16px;
+    overflow-x: auto;
+    margin-bottom: 1.5rem;
+    font-size: 0.85rem;
+    line-height: 1.6;
+  }
+
+  .post-body :global(pre code) {
+    background: none;
+    border: none;
+    padding: 0;
+    color: var(--text);
+  }
+
+  .post-body :global(blockquote) {
+    border-left: 2px solid var(--accent-dim);
+    padding-left: 16px;
+    color: var(--text-muted);
+    margin: 1.5rem 0;
+    font-style: italic;
+  }
+
+  .post-body :global(a) {
+    color: var(--accent);
+    border-bottom: 1px solid var(--accent-dim);
+  }
+
+  .post-body :global(hr) {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 2rem 0;
+  }
+</style>

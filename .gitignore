@@ -1,0 +1,15 @@
+node_modules/
+dist/
+.astro/
+.env
+.env.*
+!.env.example
+*.tsbuildinfo
+
+# Go
+apps/api/bin/
+*.exe
+
+# OS
+.DS_Store
+Thumbs.db
