@@ -1,0 +1,101 @@
+---
+import { Image } from "astro:assets";
+import type { Photo } from "@/types";
+
+interface Props {
+  photos: Photo[];
+}
+
+const { photos } = Astro.props;
+---
+
+<div class="photo-strip-wrap">
+  <div class="home-label">recent shots 📸</div>
+
+  <a href="/photos" class="photo-strip">
+    {photos.map((photo) => (
+      <div class="strip-item">
+        <Image
+          class="strip-img"
+          src={photo.src}
+          alt={photo.caption}
+          width={photo.width}
+          height={photo.height}
+          loading="lazy"
+        />
+      </div>
+    ))}
+  </a>
+
+  <div class="strip-footer">
+    <span>shot on fujifilm x-t5</span>
+    <a href="/photos">all photos →</a>
+  </div>
+</div>
+
+<style>
+  .photo-strip-wrap { margin-bottom: 52px; }
+
+  .home-label {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+
+  .photo-strip {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 6px;
+    margin-bottom: 12px;
+    border: none;
+    text-decoration: none;
+  }
+
+  .strip-item {
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    border-radius: 3px;
+    background: var(--bg-3);
+    border: 1px solid var(--border);
+  }
+
+  .strip-item :global(.strip-img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.4s ease, filter 0.3s ease;
+    filter: saturate(0.85);
+  }
+
+  .photo-strip:hover .strip-item :global(.strip-img) {
+    filter: saturate(1);
+  }
+
+  .strip-item:hover :global(.strip-img) {
+    transform: scale(1.04);
+  }
+
+  .strip-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+  }
+
+  .strip-footer a {
+    color: var(--text-muted);
+    font-size: 0.78rem;
+    border: none;
+    transition: color 0.15s;
+  }
+
+  .strip-footer a:hover { color: var(--accent); }
+
+  @media (max-width: 540px) {
+    .photo-strip { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>

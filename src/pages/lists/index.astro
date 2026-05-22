@@ -1,0 +1,74 @@
+---
+import { getLists } from "@/data/lists";
+import Base from "@/layouts/Base.astro";
+
+const lists = getLists();
+---
+
+<Base title="lists">
+  <div class="page-title"><span class="sl">// </span>lists 📋</div>
+  <p class="page-sub">public lists — things I'm tracking, considering, or collecting thoughts on</p>
+
+  <div class="list-cards">
+    {lists.map((list) => (
+      <a class="list-card" href={`/lists/${list.slug}`}>
+        <div class="card-left">
+          <span class="card-name">{list.emoji} {list.name}</span>
+          <span class="card-desc">{list.description}</span>
+        </div>
+        <span class="card-count">{list.items.length} items</span>
+      </a>
+    ))}
+  </div>
+</Base>
+
+<style>
+  .list-cards { display: flex; flex-direction: column; }
+
+  .list-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--border);
+    gap: 12px;
+    text-decoration: none;
+    border-left: none;
+    border-right: none;
+    border-top: none;
+    cursor: pointer;
+    transition: color 0.15s;
+  }
+
+  .list-card:last-child { border-bottom: none; }
+  .list-card:hover .card-name { color: var(--accent); }
+
+  .card-left {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .card-name {
+    font-size: 0.90rem;
+    color: var(--text);
+    font-weight: 500;
+    transition: color 0.15s;
+  }
+
+  .card-desc {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+  }
+
+  .card-count {
+    font-size: 0.70rem;
+    color: var(--text-muted);
+    background: var(--bg-3);
+    border: 1px solid var(--border);
+    padding: 2px 9px;
+    border-radius: 10px;
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+</style>

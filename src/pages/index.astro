@@ -1,0 +1,215 @@
+---
+import PhotoStrip from "@/components/PhotoStrip.astro";
+import { getCuratedBlogPosts } from "@/data/blog";
+import { getStripPhotos } from "@/data/photos";
+import Base from "@/layouts/Base.astro";
+
+const posts = await getCuratedBlogPosts();
+const photos = getStripPhotos();
+---
+
+<Base>
+  <!-- Intro -->
+  <div class="intro">
+    <div class="intro-handle">
+      hej<span class="sl">.</span>&nbsp;it's anadi<span class="sl">.</span>&nbsp;<span class="cursor"></span>
+    </div>
+    <div class="intro-tagline">
+      <span class="sl">// </span>backend engineer · 📍 stockholm, sweden
+    </div>
+
+    <div class="intro-body">
+      <p>
+        I build distributed systems and backend infrastructure, mostly in
+        <a href="https://go.dev" target="_blank" rel="noopener">Go</a> and
+        <a href="https://typescriptlang.org" target="_blank" rel="noopener">TypeScript</a>.
+        Currently at [company], working on [what you're building].
+        I've been writing software for X years, mostly in the backend and infra
+        space — databases, observability, APIs that don't fall over.
+      </p>
+      <p>
+        I care about systems that are boring in the right ways: predictable,
+        well-observed, and easy to reason about at 2am when something is on fire 🔥.
+        I run a small <a href="/stack">homelab</a> in Stockholm where I break things
+        intentionally so production doesn't have to.
+      </p>
+      <p>
+        Outside of work I shoot <a href="/photos">photos 📸</a>,
+        mostly street and landscape around Stockholm and wherever I end up travelling.
+        Sometimes I also write about what I'm learning.
+      </p>
+    </div>
+
+    <div class="intro-status">
+      <span
+        class="status-dot"
+        aria-hidden="true"
+        style="width:5px;height:5px;border-radius:50%;background:#22c55e;box-shadow:0 0 5px rgba(34,197,94,.95);"
+      ></span>
+      <span>currently: building this site · reading <em>Database Internals</em></span>
+    </div>
+  </div>
+
+  <!-- Curated blog -->
+  <div class="home-blog">
+    <div class="home-label">some blog posts</div>
+    <ul class="curated-list">
+      {posts.map((post) => (
+        <li>
+          <a href={`/blog/${post.slug}`}>
+            <span class="arrow">→</span>
+            {post.title}
+            <span class="post-tag">{post.tag}</span>
+          </a>
+        </li>
+      ))}
+    </ul>
+    <a class="all-link" href="/blog">all posts →</a>
+  </div>
+
+  <!-- Photo strip -->
+  <PhotoStrip photos={photos} />
+</Base>
+
+<style>
+  /* ── Intro ── */
+  .intro { margin-bottom: 52px; }
+
+  .intro-handle {
+    font-size: 2rem;
+    font-weight: 600;
+    color: var(--text);
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+  }
+
+  .cursor {
+    display: inline-block;
+    width: 10px;
+    height: 1.8rem;
+    background: var(--accent);
+    margin-left: 6px;
+    opacity: 0.85;
+    animation: blink 1.2s step-end infinite;
+    border-radius: 1px;
+    vertical-align: middle;
+  }
+
+  @keyframes blink { 0%, 100% { opacity: 0.85; } 50% { opacity: 0; } }
+
+  .intro-tagline {
+    font-size: 0.83rem;
+    color: var(--text-muted);
+    margin-bottom: 26px;
+    letter-spacing: 0.02em;
+  }
+
+  .intro-body {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    font-size: 0.90rem;
+    color: var(--text);
+    line-height: 1.95;
+    max-width: 590px;
+  }
+
+  .intro-status {
+    margin-top: 22px;
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    background: var(--bg-2);
+    border: 1px solid var(--border);
+    border-left: 2px solid var(--accent);
+    padding: 7px 13px;
+    border-radius: 2px;
+  }
+
+  .status-dot {
+    display: inline-block;
+    flex-shrink: 0;
+  }
+
+  /* ── Curated blog ── */
+  .home-blog { margin-bottom: 52px; }
+
+  .home-label {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+
+  .curated-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    border-top: 1px solid var(--border);
+  }
+
+  .curated-list li { border-bottom: 1px solid var(--border); }
+
+  .curated-list li a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 0;
+    font-size: 0.875rem;
+    color: var(--text);
+    text-decoration: none;
+    border: none;
+    transition: color 0.15s;
+  }
+
+  .curated-list li a:hover { color: var(--accent); }
+
+  .arrow {
+    color: var(--accent-dim);
+    flex-shrink: 0;
+    transition: color 0.15s, transform 0.15s;
+  }
+
+  .curated-list li a:hover .arrow {
+    color: var(--accent);
+    transform: translateX(2px);
+  }
+
+  .post-tag {
+    font-size: 0.74rem;
+    color: var(--accent-dim);
+    background: var(--accent-glow);
+    padding: 1px 6px;
+    border-radius: 2px;
+    border: 1px solid var(--tag-border);
+    margin-left: auto;
+    flex-shrink: 0;
+  }
+
+  .all-link {
+    display: inline-block;
+    margin-top: 14px;
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    text-decoration: none;
+    border: none;
+    border-bottom: 1px solid transparent;
+    padding-bottom: 1px;
+    transition: color 0.15s, border-color 0.15s;
+  }
+
+  .all-link:hover {
+    color: var(--accent);
+    border-bottom-color: var(--accent-dim);
+  }
+
+  @media (max-width: 540px) {
+    .intro-handle { font-size: 1.5rem; }
+  }
+</style>

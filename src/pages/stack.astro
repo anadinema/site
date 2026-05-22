@@ -1,0 +1,146 @@
+---
+import Base from "@/layouts/Base.astro";
+---
+
+<Base title="stack">
+  <div class="page-title"><span class="sl">// </span>stack ⚙️</div>
+  <p class="page-sub">hardware, software, and workflow — what my day actually looks like</p>
+
+  <div class="stack-block">
+    <div class="stack-heading"><span class="sl">// </span>💻 hardware</div>
+    <div class="stack-entries">
+      <div class="entry">
+        <div class="entry-name">MacBook Pro M3 Max — 14"</div>
+        <div class="entry-desc">36GB unified RAM. Daily driver. Fast enough that I never think about the machine, which is the point.</div>
+      </div>
+      <div class="entry">
+        <div class="entry-name">Dell U2723D — 27" 4K</div>
+        <div class="entry-desc">USB-C single-cable setup. Good colour accuracy, matte panel. Does the job without demanding attention.</div>
+      </div>
+      <div class="entry">
+        <div class="entry-name">Keychron Q1 Pro</div>
+        <div class="entry-desc">Gateron G Pro switches. Wireless. Quiet enough for calls, tactile enough to feel good.</div>
+      </div>
+      <div class="entry">
+        <div class="entry-name">Logitech MX Master 3S</div>
+        <div class="entry-desc">Replaced every mouse I've tried. The electromagnetic scroll wheel is the kind of thing you only appreciate once you have it.</div>
+      </div>
+      <div class="entry">
+        <div class="entry-name">Synology DS923+ 🗄️</div>
+        <div class="entry-desc">Home NAS. ~16TB usable. Runs Tailscale, a few Docker containers, and backs up everything important.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="stack-block">
+    <div class="stack-heading"><span class="sl">// </span>🖥 editor & terminal</div>
+    <div class="stack-entries">
+      <div class="entry">
+        <div class="entry-name">Neovim</div>
+        <div class="entry-desc">Primary editor. LazyVim as the base, minimal plugins on top. Go + TypeScript LSP. I've tried Zed and VS Code periodically — I always come back.</div>
+        <div class="entry-sub">→ github.com/anadinema/dotfiles</div>
+      </div>
+      <div class="entry">
+        <div class="entry-name">WezTerm</div>
+        <div class="entry-desc">Fast, GPU-accelerated, Lua-configurable. Handles multiplexing natively. Replaced tmux + iTerm2 in one move.</div>
+      </div>
+      <div class="entry">
+        <div class="entry-name">JetBrains Mono — 14px</div>
+        <div class="entry-desc">Good ligatures, clear at small sizes. Catppuccin Mocha theme throughout. Using it on this site too.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="stack-block">
+    <div class="stack-heading"><span class="sl">// </span>🛠 software & tools</div>
+    <div class="stack-entries">
+      <div class="entry">
+        <div class="entry-name">Raycast</div>
+        <div class="entry-desc">Launcher, clipboard history, window management, snippets. Replaced Alfred, Spectacle, and a pile of menu bar apps.</div>
+      </div>
+      <div class="entry">
+        <div class="entry-name">Obsidian</div>
+        <div class="entry-desc">Notes in plain markdown, git-synced across machines. No cloud subscription, no lock-in. Dataview plugin for structured queries.</div>
+      </div>
+      <div class="entry">
+        <div class="entry-name">TablePlus</div>
+        <div class="entry-desc">DB GUI for Postgres. Connects to local, Supabase, and SSH-tunnelled instances without fuss.</div>
+      </div>
+      <div class="entry">
+        <div class="entry-name">Proxyman</div>
+        <div class="entry-desc">HTTP proxy and inspector for debugging API traffic. Easier than Charles for quick work.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="stack-block">
+    <div class="stack-heading"><span class="sl">// </span>⚡ workflow</div>
+    <div class="stack-entries">
+      <div class="entry">
+        <div class="entry-name">git (CLI only)</div>
+        <div class="entry-desc">Aliases for common flows. No GUI clients. The mental model matters more than the interface.</div>
+      </div>
+      <div class="entry">
+        <div class="entry-name">Docker + Compose</div>
+        <div class="entry-desc">Local dev always containerised. <code>docker compose up</code> and the whole stack runs, same on every machine.</div>
+      </div>
+      <div class="entry">
+        <div class="entry-name">just</div>
+        <div class="entry-desc">Task runner. A Justfile in every project root. Replaces Makefiles without the tab-indent madness.</div>
+        <div class="entry-sub">→ github.com/casey/just</div>
+      </div>
+      <div class="entry">
+        <div class="entry-name">mise</div>
+        <div class="entry-desc">Runtime version manager. Replaced asdf, nvm, and gvm in one tool. Per-project <code>.mise.toml</code> files.</div>
+      </div>
+    </div>
+  </div>
+</Base>
+
+<style>
+  .stack-block { margin-bottom: 46px; }
+
+  .stack-heading {
+    font-size: 1.05rem;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 22px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .stack-entries {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .entry-name {
+    font-size: 0.90rem;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 3px;
+  }
+
+  .entry-desc {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    line-height: 1.75;
+  }
+
+  .entry-desc code {
+    color: var(--accent);
+    font-size: 0.88em;
+    background: var(--bg-2);
+    border: 1px solid var(--border);
+    padding: 1px 5px;
+    border-radius: 2px;
+  }
+
+  .entry-sub {
+    font-size: 0.70rem;
+    color: var(--accent-dim);
+    margin-top: 4px;
+    letter-spacing: 0.02em;
+  }
+</style>
