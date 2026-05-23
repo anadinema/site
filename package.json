@@ -9,7 +9,7 @@
     "lint": "biome check",
     "lint:fix": "biome check --write",
     "check": "astro check && biome check",
-    "generate-types": "wrangler types --path src/generated/worker-configuration.d.ts",
+    "generate-types": "mkdir -p src/generated && wrangler types --path src/generated/worker-configuration.d.ts",
     "deploy": "npm run build && wrangler deploy",
     "ci": "npm run generate-types && npm run check"
   },
