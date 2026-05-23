@@ -65,9 +65,6 @@ const {
         const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark'
         html.setAttribute('data-theme', next)
         localStorage.setItem('theme', next)
-
-        const icon  = document.getElementById('theme-icon')
-        if (icon)  icon.textContent  = next === 'dark' ? '◐' : '◑'
       }
     </script>
   </body>
