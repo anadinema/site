@@ -1,13 +1,9 @@
 ---
+import { ChevronLeft, ChevronRight, X } from "@lucide/astro";
 import { getPhotos } from "@/data/photos";
 import Base from "@/layouts/Base.astro";
 
 const photos = getPhotos();
-const photoItems = photos.map((photo) => ({
-  src: photo.src,
-  caption: photo.caption,
-  location: photo.location,
-}));
 ---
 
 <Base title="photos">
@@ -17,7 +13,14 @@ const photoItems = photos.map((photo) => ({
   <div class="photo-grid">
     {photos.map((photo, index) => (
       <div class:list={['photo-item', { tall: photo.tall }]}>
-        <button class="photo-open" data-index={index} aria-label={`Open ${photo.caption}`}>
+        <button
+          class="photo-open"
+          data-index={index}
+          data-src={photo.src}
+          data-caption={photo.caption}
+          data-location={photo.location}
+          aria-label={`Open ${photo.caption}`}
+        >
           <img
             class="photo-img"
             src={photo.src}
@@ -37,25 +40,24 @@ const photoItems = photos.map((photo) => ({
   </div>
 
   <div id="photo-lightbox" class="lightbox" hidden aria-hidden="true">
-    <button id="lightbox-close" class="lightbox-close" aria-label="Close photo viewer">×</button>
-    <button id="lightbox-prev" class="lightbox-nav lightbox-prev" aria-label="Previous photo">←</button>
+    <button id="lightbox-close" class="lightbox-close" aria-label="Close photo viewer">
+      <X />
+    </button>
+    <button id="lightbox-prev" class="lightbox-nav lightbox-prev" aria-label="Previous photo">
+      <ChevronLeft />
+    </button>
 
     <figure class="lightbox-figure">
       <img id="lightbox-image" class="lightbox-image" src="" alt="" />
       <figcaption id="lightbox-caption" class="lightbox-caption"></figcaption>
     </figure>
 
-    <button id="lightbox-next" class="lightbox-nav lightbox-next" aria-label="Next photo">→</button>
+    <button id="lightbox-next" class="lightbox-nav lightbox-next" aria-label="Next photo">
+      <ChevronRight />
+    </button>
   </div>
 
-  <script id="photo-data" type="application/json" is:inline>
-    {JSON.stringify(photoItems)}
-  </script>
-
   <script is:inline>
-    const photoDataEl = document.getElementById('photo-data')
-    const photos = JSON.parse(photoDataEl?.textContent ?? '[]')
-
     const lightbox = document.getElementById('photo-lightbox')
     const image = document.getElementById('lightbox-image')
     const caption = document.getElementById('lightbox-caption')
@@ -63,11 +65,16 @@ const photoItems = photos.map((photo) => ({
     const prevBtn = document.getElementById('lightbox-prev')
     const nextBtn = document.getElementById('lightbox-next')
     const openButtons = Array.from(document.querySelectorAll('.photo-open'))
+    const items = openButtons.map((button) => ({
+      src: button.getAttribute('data-src') ?? '',
+      caption: button.getAttribute('data-caption') ?? '',
+      location: button.getAttribute('data-location') ?? '',
+    }))
 
     let currentIndex = 0
 
     const render = () => {
-      const current = photos[currentIndex]
+      const current = items[currentIndex]
       if (!current) return
       image?.setAttribute('src', current.src)
       image?.setAttribute('alt', current.caption)
@@ -77,6 +84,7 @@ const photoItems = photos.map((photo) => ({
     }
 
     const open = (index) => {
+      if (!items.length) return
       currentIndex = index
       render()
       if (!lightbox) return
@@ -93,12 +101,14 @@ const photoItems = photos.map((photo) => ({
     }
 
     const prev = () => {
-      currentIndex = (currentIndex - 1 + photos.length) % photos.length
+      if (!items.length) return
+      currentIndex = (currentIndex - 1 + items.length) % items.length
       render()
     }
 
     const next = () => {
-      currentIndex = (currentIndex + 1) % photos.length
+      if (!items.length) return
+      currentIndex = (currentIndex + 1) % items.length
       render()
     }
 
@@ -136,7 +146,7 @@ const photoItems = photos.map((photo) => ({
   .photo-item {
     overflow: hidden;
     border-radius: 3px;
-    background: var(--bg-3);
+    background: var(--bg-2);
     border: 1px solid var(--border);
   }
 
@@ -169,13 +179,13 @@ const photoItems = photos.map((photo) => ({
   .photo-caption {
     padding: 8px 10px 9px;
     font-size: 0.72rem;
-    color: var(--text-muted);
+    color: var(--text);
     border-top: 1px solid var(--border);
     line-height: 1.4;
   }
 
   .photo-location {
-    color: var(--text-faint);
+    color: var(--text-muted);
     margin-left: 8px;
   }
 
@@ -188,6 +198,10 @@ const photoItems = photos.map((photo) => ({
     align-items: center;
     justify-content: center;
     padding: 24px;
+  }
+
+  .lightbox[hidden] {
+    display: none;
   }
 
   .lightbox-figure {
@@ -208,7 +222,7 @@ const photoItems = photos.map((photo) => ({
   }
 
   .lightbox-caption {
-    color: #e5e7eb;
+    color: var(--text);
     font-size: 0.8rem;
     letter-spacing: 0.01em;
   }
@@ -217,23 +231,34 @@ const photoItems = photos.map((photo) => ({
   .lightbox-nav {
     all: unset;
     position: fixed;
-    color: #f3f4f6;
+    color: var(--text-muted);
     cursor: pointer;
     user-select: none;
     line-height: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 999px;
+    background: color-mix(in oklab, var(--bg) 75%, transparent);
   }
 
   .lightbox-close {
     top: 16px;
     right: 18px;
-    font-size: 2rem;
   }
 
   .lightbox-nav {
     top: 50%;
     transform: translateY(-50%);
-    font-size: 2rem;
-    padding: 10px;
+    padding: 0;
+  }
+
+  .lightbox-close :global(svg),
+  .lightbox-nav :global(svg) {
+    width: 24px;
+    height: 24px;
   }
 
   .lightbox-prev { left: 14px; }
@@ -248,9 +273,6 @@ const photoItems = photos.map((photo) => ({
       padding: 8px;
     }
 
-    .lightbox-nav {
-      font-size: 1.6rem;
-      padding: 6px;
-    }
+    .lightbox-nav { width: 36px; height: 36px; }
   }
 </style>
