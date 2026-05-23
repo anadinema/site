@@ -3,6 +3,11 @@ import { getPhotos } from "@/data/photos";
 import Base from "@/layouts/Base.astro";
 
 const photos = getPhotos();
+const photoItems = photos.map((photo) => ({
+  src: photo.src,
+  caption: photo.caption,
+  location: photo.location,
+}));
 ---
 
 <Base title="photos">
@@ -10,17 +15,19 @@ const photos = getPhotos();
   <p class="page-sub">landscape, architecture and thoughts — shot on iphone · stockholm & beyond</p>
 
   <div class="photo-grid">
-    {photos.map((photo) => (
+    {photos.map((photo, index) => (
       <div class:list={['photo-item', { tall: photo.tall }]}>
-        <img
-          class="photo-img"
-          src={photo.src}
-          alt={photo.caption}
-          width={photo.width}
-          height={photo.height}
-          loading="lazy"
-          decoding="async"
-        />
+        <button class="photo-open" data-index={index} aria-label={`Open ${photo.caption}`}>
+          <img
+            class="photo-img"
+            src={photo.src}
+            alt={photo.caption}
+            width={photo.width}
+            height={photo.height}
+            loading="lazy"
+            decoding="async"
+          />
+        </button>
         <div class="photo-caption">
           {photo.caption}
           <span class="photo-location">{photo.location}</span>
@@ -28,6 +35,95 @@ const photos = getPhotos();
       </div>
     ))}
   </div>
+
+  <div id="photo-lightbox" class="lightbox" hidden aria-hidden="true">
+    <button id="lightbox-close" class="lightbox-close" aria-label="Close photo viewer">×</button>
+    <button id="lightbox-prev" class="lightbox-nav lightbox-prev" aria-label="Previous photo">←</button>
+
+    <figure class="lightbox-figure">
+      <img id="lightbox-image" class="lightbox-image" src="" alt="" />
+      <figcaption id="lightbox-caption" class="lightbox-caption"></figcaption>
+    </figure>
+
+    <button id="lightbox-next" class="lightbox-nav lightbox-next" aria-label="Next photo">→</button>
+  </div>
+
+  <script id="photo-data" type="application/json" is:inline>
+    {JSON.stringify(photoItems)}
+  </script>
+
+  <script is:inline>
+    const photoDataEl = document.getElementById('photo-data')
+    const photos = JSON.parse(photoDataEl?.textContent ?? '[]')
+
+    const lightbox = document.getElementById('photo-lightbox')
+    const image = document.getElementById('lightbox-image')
+    const caption = document.getElementById('lightbox-caption')
+    const closeBtn = document.getElementById('lightbox-close')
+    const prevBtn = document.getElementById('lightbox-prev')
+    const nextBtn = document.getElementById('lightbox-next')
+    const openButtons = Array.from(document.querySelectorAll('.photo-open'))
+
+    let currentIndex = 0
+
+    const render = () => {
+      const current = photos[currentIndex]
+      if (!current) return
+      image?.setAttribute('src', current.src)
+      image?.setAttribute('alt', current.caption)
+      if (caption) {
+        caption.textContent = `${current.caption} · ${current.location}`
+      }
+    }
+
+    const open = (index) => {
+      currentIndex = index
+      render()
+      if (!lightbox) return
+      lightbox.hidden = false
+      lightbox.setAttribute('aria-hidden', 'false')
+      document.body.style.overflow = 'hidden'
+    }
+
+    const close = () => {
+      if (!lightbox) return
+      lightbox.hidden = true
+      lightbox.setAttribute('aria-hidden', 'true')
+      document.body.style.overflow = ''
+    }
+
+    const prev = () => {
+      currentIndex = (currentIndex - 1 + photos.length) % photos.length
+      render()
+    }
+
+    const next = () => {
+      currentIndex = (currentIndex + 1) % photos.length
+      render()
+    }
+
+    openButtons.forEach((button) => {
+      button.addEventListener('click', () => {
+        const index = Number(button.getAttribute('data-index') ?? '0')
+        open(index)
+      })
+    })
+
+    closeBtn?.addEventListener('click', close)
+    prevBtn?.addEventListener('click', prev)
+    nextBtn?.addEventListener('click', next)
+
+    lightbox?.addEventListener('click', (event) => {
+      if (event.target === lightbox) close()
+    })
+
+    window.addEventListener('keydown', (event) => {
+      if (!lightbox || lightbox.hidden) return
+      if (event.key === 'Escape') close()
+      if (event.key === 'ArrowLeft') prev()
+      if (event.key === 'ArrowRight') next()
+    })
+  </script>
 </Base>
 
 <style>
@@ -42,7 +138,13 @@ const photos = getPhotos();
     border-radius: 3px;
     background: var(--bg-3);
     border: 1px solid var(--border);
-    cursor: pointer;
+  }
+
+  .photo-open {
+    all: unset;
+    display: block;
+    width: 100%;
+    cursor: zoom-in;
   }
 
   .photo-item.tall { grid-row: span 2; }
@@ -77,9 +179,78 @@ const photos = getPhotos();
     margin-left: 8px;
   }
 
+  .lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    background: rgba(0, 0, 0, 0.88);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+  }
+
+  .lightbox-figure {
+    margin: 0;
+    max-width: min(94vw, 1200px);
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .lightbox-image {
+    max-width: 100%;
+    max-height: calc(90vh - 42px);
+    object-fit: contain;
+    border-radius: 4px;
+  }
+
+  .lightbox-caption {
+    color: #e5e7eb;
+    font-size: 0.8rem;
+    letter-spacing: 0.01em;
+  }
+
+  .lightbox-close,
+  .lightbox-nav {
+    all: unset;
+    position: fixed;
+    color: #f3f4f6;
+    cursor: pointer;
+    user-select: none;
+    line-height: 1;
+  }
+
+  .lightbox-close {
+    top: 16px;
+    right: 18px;
+    font-size: 2rem;
+  }
+
+  .lightbox-nav {
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 2rem;
+    padding: 10px;
+  }
+
+  .lightbox-prev { left: 14px; }
+  .lightbox-next { right: 14px; }
+
   @media (max-width: 480px) {
     .photo-grid          { grid-template-columns: 1fr; }
     .photo-item.tall     { grid-row: span 1; }
     .photo-item.tall .photo-img { min-height: 240px; }
+
+    .lightbox {
+      padding: 8px;
+    }
+
+    .lightbox-nav {
+      font-size: 1.6rem;
+      padding: 6px;
+    }
   }
 </style>
