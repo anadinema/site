@@ -19,14 +19,6 @@ export default defineConfig({
     },
   ],
 
-  image: {
-    remotePatterns: [
-      { protocol: "https", hostname: "picsum.photos" },
-      { protocol: "https", hostname: "fastly.picsum.photos" },
-    ],
-    responsiveStyles: true,
-  },
-
   build: {
     inlineStylesheets: "always",
   },

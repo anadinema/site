@@ -1,5 +1,4 @@
 ---
-import { Image } from "astro:assets";
 import { getPhotos } from "@/data/photos";
 import Base from "@/layouts/Base.astro";
 
@@ -8,18 +7,19 @@ const photos = getPhotos();
 
 <Base title="photos">
   <div class="page-title"><span class="sl">// </span>photos 📸</div>
-  <p class="page-sub">street, landscape, and light — shot on fujifilm x-t5 · stockholm & beyond</p>
+  <p class="page-sub">landscape, architecture and thoughts — shot on iphone · stockholm & beyond</p>
 
   <div class="photo-grid">
     {photos.map((photo) => (
       <div class:list={['photo-item', { tall: photo.tall }]}>
-        <Image
+        <img
           class="photo-img"
           src={photo.src}
           alt={photo.caption}
           width={photo.width}
           height={photo.height}
           loading="lazy"
+          decoding="async"
         />
         <div class="photo-caption">
           {photo.caption}
@@ -47,7 +47,7 @@ const photos = getPhotos();
 
   .photo-item.tall { grid-row: span 2; }
 
-  .photo-item :global(.photo-img) {
+  .photo-item .photo-img {
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -57,9 +57,9 @@ const photos = getPhotos();
     filter: saturate(0.85);
   }
 
-  .photo-item.tall :global(.photo-img) { min-height: 420px; }
+  .photo-item.tall .photo-img { min-height: 420px; }
 
-  .photo-item:hover :global(.photo-img) {
+  .photo-item:hover .photo-img {
     transform: scale(1.03);
     filter: saturate(1.05);
   }
@@ -80,6 +80,6 @@ const photos = getPhotos();
   @media (max-width: 480px) {
     .photo-grid          { grid-template-columns: 1fr; }
     .photo-item.tall     { grid-row: span 1; }
-    .photo-item.tall :global(.photo-img) { min-height: 240px; }
+    .photo-item.tall .photo-img { min-height: 240px; }
   }
 </style>

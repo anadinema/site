@@ -1,5 +1,4 @@
 ---
-import { Image } from "astro:assets";
 import type { Photo } from "@/types";
 
 interface Props {
@@ -15,20 +14,21 @@ const { photos } = Astro.props;
   <a href="/photos" class="photo-strip">
     {photos.map((photo) => (
       <div class="strip-item">
-        <Image
+        <img
           class="strip-img"
           src={photo.src}
           alt={photo.caption}
           width={photo.width}
           height={photo.height}
           loading="lazy"
+          decoding="async"
         />
       </div>
     ))}
   </a>
 
   <div class="strip-footer">
-    <span>shot on fujifilm x-t5</span>
+    <span>shot on iphone</span>
     <a href="/photos">all photos →</a>
   </div>
 </div>
@@ -61,7 +61,7 @@ const { photos } = Astro.props;
     border: 1px solid var(--border);
   }
 
-  .strip-item :global(.strip-img) {
+  .strip-item .strip-img {
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -70,11 +70,11 @@ const { photos } = Astro.props;
     filter: saturate(0.85);
   }
 
-  .photo-strip:hover .strip-item :global(.strip-img) {
+  .photo-strip:hover .strip-item .strip-img {
     filter: saturate(1);
   }
 
-  .strip-item:hover :global(.strip-img) {
+  .strip-item:hover .strip-img {
     transform: scale(1.04);
   }
 

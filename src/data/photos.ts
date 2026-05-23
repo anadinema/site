@@ -1,84 +1,82 @@
 import type { Photo } from "@/types";
 
+const ASSET_BASE_URL = "/bucket/photos";
+
 export function getPhotos(): Photo[] {
   return [
     {
-      id: "sthlm1",
-      src: "https://picsum.photos/seed/sthlm1/600/900",
-      width: 600,
-      height: 900,
-      caption: "Gamla Stan in January",
+      id: "stockholm-city-line",
+      src: `${ASSET_BASE_URL}/stockholm-city-line.jpeg`,
+      width: 4032,
+      height: 2268,
+      caption: "City/shore line - Stockholm, Sweden",
+      location: "stockholm",
+    },
+    {
+      id: "stockholm-autumn",
+      src: `${ASSET_BASE_URL}/stockholm-autumn.jpeg`,
+      width: 2268,
+      height: 4032,
+      caption: "Autumn leaves - Stockholm, Sweden",
       location: "stockholm",
       tall: true,
     },
     {
-      id: "sthlm3",
-      src: "https://picsum.photos/seed/sthlm3/600/400",
-      width: 600,
-      height: 400,
-      caption: "First snow",
-      location: "djurgården",
-    },
-    {
-      id: "sthlm5",
-      src: "https://picsum.photos/seed/sthlm5/600/400",
-      width: 600,
-      height: 400,
-      caption: "Morning ferry",
-      location: "södermalm",
-    },
-    {
-      id: "sthlm9",
-      src: "https://picsum.photos/seed/sthlm9/600/900",
-      width: 600,
-      height: 900,
-      caption: "Alley off Hornsgatan",
-      location: "stockholm",
+      id: "bali-kelingking-beach",
+      src: `${ASSET_BASE_URL}/bali-kelingking-beach.jpeg`,
+      width: 2161,
+      height: 3841,
+      caption: "Kelingking Beach - Nusa Penida, Bali, Indonesia",
+      location: "bali",
       tall: true,
     },
     {
-      id: "sthlm11",
-      src: "https://picsum.photos/seed/sthlm11/600/400",
-      width: 600,
-      height: 400,
-      caption: "Market day",
-      location: "östermalm",
+      id: "bali-ulun-danu-bratan-temple",
+      src: `${ASSET_BASE_URL}/bali-ulun-danu-bratan-temple.jpeg`,
+      width: 3838,
+      height: 2159,
+      caption: "Ulun Danu Bratan Temple - Bali, Indonesia",
+      location: "bali",
     },
     {
-      id: "sthlm13",
-      src: "https://picsum.photos/seed/sthlm13/600/400",
-      width: 600,
-      height: 400,
-      caption: "Late light",
-      location: "lidingö",
+      id: "budapest-fisherman-chalet",
+      src: `${ASSET_BASE_URL}/budapest-fisherman-chalet.jpeg`,
+      width: 3024,
+      height: 4032,
+      caption: "Fisherman's Bastion - Budapest, Hungary",
+      location: "budapest",
+      tall: true,
     },
     {
-      id: "sthlm15",
-      src: "https://picsum.photos/seed/sthlm15/600/400",
-      width: 600,
-      height: 400,
-      caption: "Rainy platform",
-      location: "t-centralen",
+      id: "budapest-st-stephens-basilica",
+      src: `${ASSET_BASE_URL}/budapest-st-stephens-basilica.jpeg`,
+      width: 2268,
+      height: 4032,
+      caption: "St. Stephen's Basilica - Budapest, Hungary",
+      location: "budapest",
+      tall: true,
     },
     {
-      id: "sthlm17",
-      src: "https://picsum.photos/seed/sthlm17/600/400",
-      width: 600,
-      height: 400,
-      caption: "Archipelago",
-      location: "vaxholm",
+      id: "kiruna-church-tower",
+      src: `${ASSET_BASE_URL}/kiruna-church-tower.jpeg`,
+      width: 2226,
+      height: 3958,
+      caption: "Church tower - Kiruna, Sweden",
+      location: "kiruna",
+      tall: true,
+    },
+    {
+      id: "lulea-outskirts",
+      src: `${ASSET_BASE_URL}/lulea-outskirts.jpeg`,
+      width: 3024,
+      height: 4032,
+      caption: "City outskirts - Luleå, Sweden",
+      location: "lulea",
+      tall: true,
     },
   ];
 }
 
 export function getStripPhotos(): Photo[] {
-  return getPhotos()
-    .filter((p) => !p.tall)
-    .slice(0, 4)
-    .map((p) => ({
-      ...p,
-      src: p.src.replace("600/400", "400/300"),
-      width: 400,
-      height: 300,
-    }));
+  return getPhotos().slice(0, 4);
 }
