@@ -1,10 +1,10 @@
 ---
+
 import { getBlogPosts } from "@/data/blog";
 import Base from "@/layouts/Base.astro";
 
 const posts = await getBlogPosts();
 
-// Group posts by year
 const byYear = posts.reduce<Record<number, typeof posts>>((acc, post) => {
   acc[post.year] ??= [];
   acc[post.year].push(post);
@@ -20,22 +20,23 @@ const years = Object.keys(byYear)
   <div class="page-title"><span class="sl">// </span>blog ✍️</div>
   <p class="page-sub">irregular notes on backend engineering, infrastructure, and tooling</p>
 
-  {years.map((year) => (
-    <div class="year-group">
-      <div class="year-label">{year}</div>
-      <div class="post-list">
-        {byYear[year].map((post) => (
-          <a class="post-item" href={`/blog/${post.slug}`}>
-            <span class="post-title">{post.title}</span>
-            <div class="post-meta">
-              <span class="post-tag">{post.tag}</span>
-              <span class="post-date">{post.date.split(' ')[0]}</span>
-            </div>
-          </a>
-        ))}
-      </div>
-    </div>
-  ))}
+    coming soon...
+  <!--{years.map((year) => (-->
+  <!--  <div class="year-group">-->
+  <!--    <div class="year-label">{year}</div>-->
+  <!--    <div class="post-list">-->
+  <!--      {byYear[year].map((post) => (-->
+  <!--        <a class="post-item" href={`/blog/${post.slug}`}>-->
+  <!--          <span class="post-title">{post.title}</span>-->
+  <!--          <div class="post-meta">-->
+  <!--            <span class="post-tag">{post.tag}</span>-->
+  <!--            <span class="post-date">{post.date.split(' ')[0]}</span>-->
+  <!--          </div>-->
+  <!--        </a>-->
+  <!--      ))}-->
+  <!--    </div>-->
+  <!--  </div>-->
+  <!--))}-->
 </Base>
 
 <style>

@@ -1,4 +1,5 @@
 ---
+
 import PhotoStrip from "@/components/PhotoStrip.astro";
 import { getCuratedBlogPosts } from "@/data/blog";
 import { getStripPhotos } from "@/data/photos";
@@ -15,28 +16,52 @@ const photos = getStripPhotos();
       hej<span class="sl">.</span>&nbsp;it's anadi<span class="sl">.</span>&nbsp;<span class="cursor"></span>
     </div>
     <div class="intro-tagline">
-      <span class="sl">// </span>backend engineer · 📍 stockholm, sweden
+      <span class="sl">// </span>senior software engineer · 📍 stockholm, sweden
     </div>
 
     <div class="intro-body">
       <p>
-        I build distributed systems and backend infrastructure, mostly in
-        <a href="https://go.dev" target="_blank" rel="noopener">Go</a> and
-        <a href="https://typescriptlang.org" target="_blank" rel="noopener">TypeScript</a>.
-        Currently at [company], working on [what you're building].
-        I've been writing software for X years, mostly in the backend and infra
-        space — databases, observability, APIs that don't fall over.
+        I build distributed event driven systems, APIs, CLIs ⚙️. Currently working at
+        <a href="https://www.postnord.com" target="_blank" rel="noopener">PostNord</a> 🚚, focused on
+        <a href="https://www.postnord.com/integrations/booking-api/" target="_blank" rel="noopener">Booking</a> and
+        <a href="https://www.postnord.com/integrations/pre-order-api/" target="_blank" rel="noopener">Location</a>
+        services used by customers to submit shipment and logistics details 📦.
+      </p>
+
+      <p>
+        At work, I choose to mostly build with
+        <span class="stack-pair" aria-label="Node.js and TypeScript">
+          <img class="stack-icons" src="https://cdn.simpleicons.org/nodedotjs?viewbox=auto&size=16" alt="Node.js" title="Node.js" loading="lazy" />
+          <img class="stack-icons" src="https://cdn.simpleicons.org/typescript?viewbox=auto&size=16" alt="TypeScript" title="TypeScript" loading="lazy" />
+        </span>
+        or
+        <span class="stack-pair" aria-label="Java and Quarkus">
+          <img class="stack-icons" src="https://cdn.simpleicons.org/openjdk/red?viewbox=auto&size=16" alt="Java" title="Java" loading="lazy" />
+          <img class="stack-icons" src="https://cdn.simpleicons.org/quarkus?viewbox=auto&size=16" alt="Quarkus" title="Quarkus" loading="lazy" />
+        </span>.
+        In personal time, I am experimenting with
+        <span class="stack-pair" aria-label="Go and Rust">
+          <img class="stack-icons-go" src="https://cdn.simpleicons.org/go?viewbox=auto&size=10" alt="Go" title="Go" loading="lazy" />
+          <img class="stack-icons" src="https://cdn.simpleicons.org/rust/red?viewbox=auto&size=16" alt="Rust" title="Rust" loading="lazy" />
+        </span>
+        for backend, and
+        <span class="stack-pair" aria-label="Astro and TypeScript">
+          <img class="stack-icons" src="https://cdn.simpleicons.org/astro?viewbox=auto&size=16" alt="Astro" title="Astro" loading="lazy" />
+          <img class="stack-icons" src="https://cdn.simpleicons.org/typescript?viewbox=auto&size=16" alt="TypeScript" title="TypeScript" loading="lazy" />
+        </span>
+        on the frontend. Interested in more of my tech stack? Go to
+        <a class="icon-link" href="https://github.com/anadinema" target="_blank" rel="noopener">
+          <img class="stack-icons" src="https://cdn.simpleicons.org/github/ec782b?viewbox=auto&size=16" alt="GitHub" title="GitHub" loading="lazy" />
+        </a> for more insights.
       </p>
       <p>
-        I care about systems that are boring in the right ways: predictable,
-        well-observed, and easy to reason about at 2am when something is on fire 🔥.
-        I run a small <a href="/stack">homelab</a> in Stockholm where I break things
-        intentionally so production doesn't have to.
+        I like systems that are simple, reliable, predictable, easy to debug when things are on 🔥, and still make
+        sense a few years later 🧱.
       </p>
       <p>
-        Outside of work I shoot <a href="/photos">photos 📸</a>,
-        mostly street and landscape around Stockholm and wherever I end up travelling.
-        Sometimes I also write about what I'm learning.
+        Outside work, I spend more time tinkering with hardware, testing CLI tools, contributing
+        to open source, or 📝 <a href="/blog">writing</a> things out.
+        Happen to click 📸 <a href="/photos">photos</a> too, when I am out travelling — mostly architecture, history, landscape, and abstract shots.
       </p>
     </div>
 
@@ -46,25 +71,26 @@ const photos = getStripPhotos();
         aria-hidden="true"
         style="width:5px;height:5px;border-radius:50%;background:#22c55e;box-shadow:0 0 5px rgba(34,197,94,.95);"
       ></span>
-      <span>currently: building this site · reading <em>Database Internals</em></span>
+      <span>currently: building this site · reading <em>The Almanack of Naval Ravikant</em></span>
     </div>
   </div>
 
   <!-- Curated blog -->
   <div class="home-blog">
     <div class="home-label">some blog posts</div>
-    <ul class="curated-list">
-      {posts.map((post) => (
-        <li>
-          <a href={`/blog/${post.slug}`}>
-            <span class="arrow">→</span>
-            {post.title}
-            <span class="post-tag">{post.tag}</span>
-          </a>
-        </li>
-      ))}
-    </ul>
-    <a class="all-link" href="/blog">all posts →</a>
+      coming soon....
+    <!--<ul class="curated-list">-->
+    <!--  {posts.map((post) => (-->
+    <!--    <li>-->
+    <!--      <a href={`/blog/${post.slug}`}>-->
+    <!--        <span class="arrow">→</span>-->
+    <!--        {post.title}-->
+    <!--        <span class="post-tag">{post.tag}</span>-->
+    <!--      </a>-->
+    <!--    </li>-->
+    <!--  ))}-->
+    <!--</ul>-->
+    <!--<a class="all-link" href="/blog">all posts →</a>-->
   </div>
 
   <!-- Photo strip -->
@@ -115,6 +141,39 @@ const photos = getStripPhotos();
     color: var(--text);
     line-height: 1.95;
     max-width: 590px;
+  }
+
+  .intro-body a.icon-link {
+    border: none;
+    text-decoration: none;
+    display: inline-flex;
+    vertical-align: middle;
+  }
+
+  .stack-pair {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    vertical-align: middle;
+    margin: 0 2px;
+  }
+
+  .stack-icons {
+    display: inline-block;
+    height: 16px;
+    width: auto;
+    vertical-align: middle;
+    margin: 0;
+    border-radius: 2px;
+  }
+
+  .stack-icons-go {
+    display: inline-block;
+    height: 10px;
+    width: auto;
+    vertical-align: middle;
+    margin: 0;
+    border-radius: 2px;
   }
 
   .intro-status {
